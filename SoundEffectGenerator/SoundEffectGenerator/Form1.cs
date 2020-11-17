@@ -215,5 +215,10 @@ namespace SoundEffectGenerator
 
             return waveProvider;
         }
+
+        private void Generate_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

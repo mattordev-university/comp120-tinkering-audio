@@ -28,20 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.soundEffect1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            this.Generate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -73,41 +69,24 @@
             this.button2.Text = "Save Sound";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // chart1
+            // soundEffect1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(19, 61);
-            this.chart1.Name = "chart1";
-            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(601, 300);
-            this.chart1.TabIndex = 3;
-            this.chart1.Text = "chart1";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(626, 61);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(80, 17);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.soundEffect1.AutoSize = true;
+            this.soundEffect1.Location = new System.Drawing.Point(626, 61);
+            this.soundEffect1.Name = "soundEffect1";
+            this.soundEffect1.Size = new System.Drawing.Size(63, 17);
+            this.soundEffect1.TabIndex = 4;
+            this.soundEffect1.Text = "Effect 1";
+            this.soundEffect1.UseVisualStyleBackColor = true;
             // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(626, 84);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(80, 17);
+            this.checkBox2.Size = new System.Drawing.Size(63, 17);
             this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "checkBox2";
+            this.checkBox2.Text = "Effect 2";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // checkBox3
@@ -115,9 +94,9 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Location = new System.Drawing.Point(626, 107);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(80, 17);
+            this.checkBox3.Size = new System.Drawing.Size(63, 17);
             this.checkBox3.TabIndex = 6;
-            this.checkBox3.Text = "checkBox3";
+            this.checkBox3.Text = "Effect 3";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox4
@@ -125,9 +104,9 @@
             this.checkBox4.AutoSize = true;
             this.checkBox4.Location = new System.Drawing.Point(712, 107);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(80, 17);
+            this.checkBox4.Size = new System.Drawing.Size(63, 17);
             this.checkBox4.TabIndex = 9;
-            this.checkBox4.Text = "checkBox4";
+            this.checkBox4.Text = "Effect 6";
             this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // checkBox5
@@ -135,9 +114,9 @@
             this.checkBox5.AutoSize = true;
             this.checkBox5.Location = new System.Drawing.Point(712, 84);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(80, 17);
+            this.checkBox5.Size = new System.Drawing.Size(63, 17);
             this.checkBox5.TabIndex = 8;
-            this.checkBox5.Text = "checkBox5";
+            this.checkBox5.Text = "Effect 5";
             this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // checkBox6
@@ -145,30 +124,40 @@
             this.checkBox6.AutoSize = true;
             this.checkBox6.Location = new System.Drawing.Point(712, 61);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(80, 17);
+            this.checkBox6.Size = new System.Drawing.Size(63, 17);
             this.checkBox6.TabIndex = 7;
-            this.checkBox6.Text = "checkBox6";
+            this.checkBox6.Text = "Effect 4";
             this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // Generate
+            // 
+            this.Generate.Font = new System.Drawing.Font("Microsoft Sans Serif", 70F);
+            this.Generate.Location = new System.Drawing.Point(19, 61);
+            this.Generate.Name = "Generate";
+            this.Generate.Size = new System.Drawing.Size(559, 295);
+            this.Generate.TabIndex = 10;
+            this.Generate.Text = "Generate";
+            this.Generate.UseVisualStyleBackColor = true;
+            this.Generate.Click += new System.EventHandler(this.Generate_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Generate);
             this.Controls.Add(this.checkBox4);
             this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.checkBox6);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.chart1);
+            this.Controls.Add(this.soundEffect1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,13 +168,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox soundEffect1;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.Button Generate;
     }
 }
 
