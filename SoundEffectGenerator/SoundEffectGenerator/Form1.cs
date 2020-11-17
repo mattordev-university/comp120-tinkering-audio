@@ -38,9 +38,10 @@ namespace SoundEffectGenerator
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void SoundEffectGenerator(object sender, EventArgs e)
         {
-
+            notes = PopulateNotes(440, -3, 8, 5);
+            noteDurations = new double[] { 0.5, 0.2, 0.3, 0.4 };
         }
 
         private List<int> GenerateSilence(double durationInSeconds)
@@ -157,13 +158,7 @@ namespace SoundEffectGenerator
             return function.Invoke(piMultiplier * Math.PI * frequency * (position / (double)SAMPLE_RATE));
         }
 
-        private void TinkeringAudioForm_Load(object sender, EventArgs e)
-        {
-            notes = PopulateNotes(440, -16, 8, 2);
-            noteDurations = new double[] { 0.5, 0.2, 0.3, 0.4 };
-        }
-
-        private void Play_Click(object sender, EventArgs e)
+        private void Generate_Click(object sender, EventArgs e)
         {
             waveOut = new WaveOut();
             waveOut.Init(convertToWaveProvider16(GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave), SAMPLE_RATE, CHANNEL_COUNT));
@@ -216,9 +211,6 @@ namespace SoundEffectGenerator
             return waveProvider;
         }
 
-        private void Generate_Click(object sender, EventArgs e)
-        {
-            
-        }
+        
     }
 }
