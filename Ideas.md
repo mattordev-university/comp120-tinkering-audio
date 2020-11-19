@@ -6,3 +6,4 @@ Effects
 -Phasinvertion Effect
 -Scaleing Amplitude for bass boost affect also use normalize to boost all low parts
 -echos for echoing
+-Reverse
