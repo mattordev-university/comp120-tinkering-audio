@@ -12,6 +12,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using NAudio;
 using NAudio.Wave;
 
+
 namespace SoundEffectGenerator
 {
 
@@ -32,6 +33,7 @@ namespace SoundEffectGenerator
 
         private List<double> notes;
         private double[] noteDurations;
+        private List<int> TempMelody;
 
         public EffectGenerator()
         {
@@ -42,8 +44,11 @@ namespace SoundEffectGenerator
         {
             notes = PopulateNotes(440, -3, 8, 1);
             noteDurations = new double[] { 0.5, 0.2, 0.3, 0.4 };
+
+            
         }
 
+        #region GENERATION
         private List<int> GenerateSilence(double durationInSeconds)
         {
             List<int> silence = new List<int>();
@@ -106,6 +111,7 @@ namespace SoundEffectGenerator
 
             return melody;
         }
+        #endregion
 
         /// <summary>
         /// Gets a random element, uses an enumerable and a random
@@ -180,10 +186,85 @@ namespace SoundEffectGenerator
             return MAX_VALUE * volume * PositionInWavePeriod(frequency, position, Math.Sin, 2.0);
         }
 
+        /// <summary>
+        /// The position in the wave
+        /// </summary>
+        /// <param name="frequency"></param>
+        /// <param name="position"></param>
+        /// <param name="function"></param>
+        /// <param name="piMultiplier"></param>
+        /// <returns>returns the sum of a calculation</returns>
         private double PositionInWavePeriod(double frequency, int position, MathFunction function, double piMultiplier)
         {
             return function.Invoke(piMultiplier * Math.PI * frequency * (position / (double)SAMPLE_RATE));
         }
+
+        #region ALGORITHMS
+        byte[] PhaseInverter(byte[] audioSample)
+        {
+            List<byte> n = new List<byte>();
+            for (int i = 0; i < audioSample.Length - 3; i++)
+            {
+                var currentBytes = BitConverter.ToInt32(audioSample, i);
+                if (currentBytes == 0)
+                {
+                    var invertedBytes = BitConverter.GetBytes(currentBytes);
+                    n.Add(invertedBytes[0]);
+                    //n.Add(invertedBytes[1]);
+                }
+                else
+                {
+                    var invertedBytes = BitConverter.GetBytes(currentBytes / currentBytes);
+                    n.Add(invertedBytes[0]);
+                    //n.Add(invertedBytes[1]);
+                }
+
+            }
+            return n.ToArray();
+        }
+
+        byte[] NormaliseSample(byte[] audioSample)
+        {
+            int n = 0;
+            for (int i = 0; i < audioSample.Length; i++)
+            {
+                n = Math.Max(n, audioSample[i]);
+            }
+            int o = 32765 / n;
+            for (int i = 0; i < audioSample.Length; i++)
+            {
+                byte p = 0;
+                p = (byte)(o * audioSample[i]);
+                audioSample[i] = p;
+            }
+            return audioSample;
+        }
+
+        byte[] ReverseSample(byte[] audioSample)
+        {
+            List<byte> reversedAudio = new List<byte>();
+            for (int i = audioSample.Length - 1; i > 0; i--)
+            {
+                reversedAudio.Add(audioSample[i]);
+            }
+            return reversedAudio.ToArray();
+        }
+
+        byte[] AmplitudeScale(byte[] audioSample, float minVolume, float maxVolume, float scaleFactor)
+        {
+            List<byte> alteredAudio = new List<byte>();
+            for (int i = 0; i < audioSample.Length - 4; i += 4)
+            {
+                var v = (BitConverter.ToInt32(audioSample, i)) * scaleFactor;
+                v = Math.Max(maxVolume, v);
+                //v = Math.Min(minVolume, v);
+                var bit = BitConverter.GetBytes(v);
+                alteredAudio.AddRange(bit);
+            }
+            return alteredAudio.ToArray();
+        }
+        #endregion
+
 
         #region BUTTONFUNCTIONS
         /// <summary>
@@ -193,9 +274,11 @@ namespace SoundEffectGenerator
         /// <param name="e"></param>
         private void Generate_Click(object sender, EventArgs e)
         {
+            TempMelody = GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave);
             waveOut = new WaveOut();
-            waveOut.Init(convertToWaveProvider16(GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave), SAMPLE_RATE, CHANNEL_COUNT));
+            waveOut.Init(convertToWaveProvider16(TempMelody, SAMPLE_RATE, CHANNEL_COUNT));
             waveOut.Play();
+            UpdateChart(chart1, TempMelody);
         }
 
         /// <summary>
@@ -215,6 +298,17 @@ namespace SoundEffectGenerator
         }
         #endregion
 
+
+        private void UpdateChart(Chart chart, List<int> data)
+        {
+            Series dataSeries = new Series();
+            dataSeries.ChartType = SeriesChartType.Line;
+            dataSeries.Points.DataBindY(data);
+
+            chart.Series.Clear();
+            chart.ChartAreas[0].AxisX.Maximum = SAMPLE_RATE;
+            chart.Series.Add(dataSeries);
+        }
 
         private IWaveProvider convertToWaveProvider16(List<int> sample, int sampleRate, int channelCount)
         {
@@ -251,6 +345,5 @@ namespace SoundEffectGenerator
             return waveProvider;
         }
 
-        
     }
 }
