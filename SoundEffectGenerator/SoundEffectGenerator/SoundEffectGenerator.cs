@@ -15,7 +15,7 @@ using NAudio.Wave;
 namespace SoundEffectGenerator
 {
 
-    public partial class Form1 : Form
+    public partial class EffectGenerator : Form
     {
 
         private readonly int SAMPLE_RATE = 44100;
@@ -33,14 +33,14 @@ namespace SoundEffectGenerator
         private List<double> notes;
         private double[] noteDurations;
 
-        public Form1()
+        public EffectGenerator()
         {
             InitializeComponent();
         }
 
         private void SoundEffectGenerator(object sender, EventArgs e)
         {
-            notes = PopulateNotes(440, -3, 8, 5);
+            notes = PopulateNotes(440, -3, 8, 1);
             noteDurations = new double[] { 0.5, 0.2, 0.3, 0.4 };
         }
 
@@ -73,6 +73,16 @@ namespace SoundEffectGenerator
             return tone;
         }
 
+        /// <summary>
+        /// This generates a random melody, and returns the melody for use in other places
+        /// </summary>
+        /// <param name="countOfNotesToPlay">
+        /// This is the amount of notes that will play.
+        /// </param>
+        /// <param name="waveFunction">
+        /// This is the TYPE of note that will play, whether that is sawtooth or sinwave etc.
+        /// </param>
+        /// <returns></returns>
         private List<int> GenerateRandomMelody(int countOfNotesToPlay, WaveFunction waveFunction)
         {
             Random rng = new Random();
@@ -97,6 +107,13 @@ namespace SoundEffectGenerator
             return melody;
         }
 
+        /// <summary>
+        /// Gets a random element, uses an enumerable and a random
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="rng"></param>
+        /// <returns></returns>
         private static T GetRandomElement<T>(IEnumerable<T> enumerable, Random rng)
         {
             int index = rng.Next(0, enumerable.Count());
@@ -134,6 +151,16 @@ namespace SoundEffectGenerator
             return notes;
         }
 
+        /// <summary>
+        /// This generates a squarewave
+        /// </summary>
+        /// <param name="frequency">
+        /// the frequency of the wave to be created.
+        /// </param>
+        /// <param name="position">
+        /// The position in the wave.
+        /// </param>
+        /// <returns></returns>
         private double SquareWave(double frequency, int position)
         {
             double value = PositionInWavePeriod(frequency, position, Math.Sin, 2.0);
@@ -158,6 +185,12 @@ namespace SoundEffectGenerator
             return function.Invoke(piMultiplier * Math.PI * frequency * (position / (double)SAMPLE_RATE));
         }
 
+        #region BUTTONFUNCTIONS
+        /// <summary>
+        /// This function is what allows the program to function. It uses
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Generate_Click(object sender, EventArgs e)
         {
             waveOut = new WaveOut();
@@ -165,6 +198,11 @@ namespace SoundEffectGenerator
             waveOut.Play();
         }
 
+        /// <summary>
+        /// This is how the program saves audio out, using the WaveFileWriter to create the file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Save_Click(object sender, EventArgs e)
         {
 
@@ -175,6 +213,8 @@ namespace SoundEffectGenerator
 
             WaveFileWriter.CreateWaveFile(filename, convertToWaveProvider16(GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave), SAMPLE_RATE, CHANNEL_COUNT));
         }
+        #endregion
+
 
         private IWaveProvider convertToWaveProvider16(List<int> sample, int sampleRate, int channelCount)
         {

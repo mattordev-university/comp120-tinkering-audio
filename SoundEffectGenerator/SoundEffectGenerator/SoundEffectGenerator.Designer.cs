@@ -1,6 +1,6 @@
 ﻿namespace SoundEffectGenerator
 {
-    partial class Form1
+    partial class EffectGenerator
     {
         /// <summary>
         /// Required designer variable.
@@ -33,11 +33,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.soundEffect1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.Generate = new System.Windows.Forms.Button();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -89,26 +89,6 @@
             this.checkBox2.Text = "Effect 2";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(626, 107);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(63, 17);
-            this.checkBox3.TabIndex = 6;
-            this.checkBox3.Text = "Effect 3";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(712, 107);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(63, 17);
-            this.checkBox4.TabIndex = 9;
-            this.checkBox4.Text = "Effect 6";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
@@ -131,14 +111,34 @@
             // 
             // Generate
             // 
-            this.Generate.Font = new System.Drawing.Font("Microsoft Sans Serif", 70F);
-            this.Generate.Location = new System.Drawing.Point(19, 61);
+            this.Generate.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F);
+            this.Generate.Location = new System.Drawing.Point(123, 386);
             this.Generate.Name = "Generate";
-            this.Generate.Size = new System.Drawing.Size(559, 295);
+            this.Generate.Size = new System.Drawing.Size(419, 52);
             this.Generate.TabIndex = 10;
             this.Generate.Text = "Generate";
             this.Generate.UseVisualStyleBackColor = true;
             this.Generate.Click += new System.EventHandler(this.Generate_Click);
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(712, 107);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(63, 17);
+            this.checkBox4.TabIndex = 9;
+            this.checkBox4.Text = "Effect 6";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(626, 107);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(63, 17);
+            this.checkBox3.TabIndex = 6;
+            this.checkBox3.Text = "Effect 3";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -170,11 +170,11 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.CheckBox soundEffect1;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.Button Generate;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }
 
