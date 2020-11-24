@@ -34,6 +34,7 @@ namespace SoundEffectGenerator
         private List<double> notes;
         private double[] noteDurations;
         private List<int> TempMelody;
+        private List<int> EffectsMelody;
 
         public EffectGenerator()
         {
@@ -200,68 +201,53 @@ namespace SoundEffectGenerator
         }
 
         #region ALGORITHMS
-        byte[] PhaseInverter(byte[] audioSample)
+        List<int> PhaseInverter(List<int> audioSample)
         {
-            List<byte> n = new List<byte>();
-            for (int i = 0; i < audioSample.Length - 3; i++)
-            {
-                var currentBytes = BitConverter.ToInt32(audioSample, i);
-                if (currentBytes == 0)
-                {
-                    var invertedBytes = BitConverter.GetBytes(currentBytes);
-                    n.Add(invertedBytes[0]);
-                    //n.Add(invertedBytes[1]);
-                }
-                else
-                {
-                    var invertedBytes = BitConverter.GetBytes(currentBytes / currentBytes);
-                    n.Add(invertedBytes[0]);
-                    //n.Add(invertedBytes[1]);
-                }
-
-            }
-            return n.ToArray();
+            List<int> n = new List<int>();
+			for (int i = 0; i < audioSample.Count; i++)
+			{
+                n.Add((audioSample[i] * -1));
+			}
+            return n;
         }
 
-        byte[] NormaliseSample(byte[] audioSample)
+        List<int> NormaliseSample(List<int> audioSample)
         {
             int n = 0;
-            for (int i = 0; i < audioSample.Length; i++)
+            for (int i = 0; i < audioSample.Count; i++)
             {
                 n = Math.Max(n, audioSample[i]);
             }
             int o = 32765 / n;
-            for (int i = 0; i < audioSample.Length; i++)
+            for (int i = 0; i < audioSample.Count; i++)
             {
-                byte p = 0;
-                p = (byte)(o * audioSample[i]);
+                int p = 0;
+                p = (o * audioSample[i]);
                 audioSample[i] = p;
             }
             return audioSample;
         }
 
-        byte[] ReverseSample(byte[] audioSample)
+        List<int> ReverseSample(List<int> audioSample)
         {
-            List<byte> reversedAudio = new List<byte>();
-            for (int i = audioSample.Length - 1; i > 0; i--)
+            List<int> reversedAudio = new List<int>();
+            for (int i = audioSample.Count - 1; i > 0; i--)
             {
                 reversedAudio.Add(audioSample[i]);
             }
-            return reversedAudio.ToArray();
+            return reversedAudio;
         }
 
-        byte[] AmplitudeScale(byte[] audioSample, float minVolume, float maxVolume, float scaleFactor)
+        List<int> AmplitudeScale(List<int> audioSample, float minVolume, float maxVolume, float scaleFactor)
         {
-            List<byte> alteredAudio = new List<byte>();
-            for (int i = 0; i < audioSample.Length - 4; i += 4)
+            List<int> alteredAudio = new List<int>();
+            for (int i = 0; i < audioSample.Count - 4; i += 4)
             {
-                var v = (BitConverter.ToInt32(audioSample, i)) * scaleFactor;
+                var v = audioSample[i] * scaleFactor;
                 v = Math.Max(maxVolume, v);
-                //v = Math.Min(minVolume, v);
-                var bit = BitConverter.GetBytes(v);
-                alteredAudio.AddRange(bit);
+                alteredAudio.Add((int)v);
             }
-            return alteredAudio.ToArray();
+            return alteredAudio;
         }
         #endregion
 
@@ -274,11 +260,48 @@ namespace SoundEffectGenerator
         /// <param name="e"></param>
         private void Generate_Click(object sender, EventArgs e)
         {
+			if (TempMelody == null) //Checks if there is a melody, if not creates new one
+			{
+                TempMelody = GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave);
+                
+            }
+            EffectsMelody = new List<int>();
+            EffectsMelody = TempMelody;
+			if (PhaseInverterEffect.Checked)
+			{
+                EffectsMelody = PhaseInverter(EffectsMelody);
+			}
+			if (NormaliseSampleEffect.Checked)
+			{
+                EffectsMelody = NormaliseSample(EffectsMelody);
+			}
+			if (ReverseSampleEffect.Checked)
+			{
+                EffectsMelody = ReverseSample(EffectsMelody);
+            }
+            //playAudio
+            waveOut = new WaveOut();
+            waveOut.Init(convertToWaveProvider16(EffectsMelody, SAMPLE_RATE, CHANNEL_COUNT));
+            waveOut.Play();
+            UpdateChart(chart1, TempMelody);
+        }
+        private void GenerateNotes_Click(object sender, EventArgs e)
+        {
             TempMelody = GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave);
             waveOut = new WaveOut();
             waveOut.Init(convertToWaveProvider16(TempMelody, SAMPLE_RATE, CHANNEL_COUNT));
             waveOut.Play();
             UpdateChart(chart1, TempMelody);
+        }
+        private void playSound_Click(object sender, EventArgs e)
+        {
+			if (TempMelody != null)
+			{
+                waveOut = new WaveOut();
+                waveOut.Init(convertToWaveProvider16(TempMelody, SAMPLE_RATE, CHANNEL_COUNT));
+                waveOut.Play();
+                UpdateChart(chart1, TempMelody);
+            }
         }
 
         /// <summary>
@@ -286,16 +309,31 @@ namespace SoundEffectGenerator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, EventArgs e)
+        private void SaveSound_Click(object sender, EventArgs e)
         {
-
-            string filename = Path.Combine(
-                Path.GetTempPath(),
-                Guid.NewGuid().ToString() + ".wav"
-                );
+            string filename = FileDirectoryTextBox.Text + FileNameTextBox.Text + ".wav";
 
             WaveFileWriter.CreateWaveFile(filename, convertToWaveProvider16(GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave), SAMPLE_RATE, CHANNEL_COUNT));
         }
+        //Broken At This Time
+        //private void LoadSound_Click(object sender, EventArgs e)
+        //{
+        //    string filename = FileDirectoryTextBox.Text+ FileNameTextBox.Text+ ".wav";
+
+        //    var wf = new WaveFileReader(filename);
+        //    List<int> audioSample = new List<int>();
+        //    byte[] buffer = new byte[wf.Length * 2];
+        //    wf.Read(buffer,0,(int)wf.Length);
+        //    for (int i = 0; i < buffer.Length; i++)
+        //    {
+        //        audioSample.Add(BitConverter.ToInt32(buffer, i));
+        //        audioSample.Add(BitConverter.ToInt32(buffer, i));
+        //    }
+        //    TempMelody = new List<int>();
+        //    TempMelody = audioSample;
+            
+        //}
+
         #endregion
 
 
@@ -345,5 +383,6 @@ namespace SoundEffectGenerator
             return waveProvider;
         }
 
-    }
+		
+	}
 }
