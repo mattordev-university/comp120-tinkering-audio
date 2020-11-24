@@ -175,7 +175,7 @@
 			this.LoadSound.TabIndex = 13;
 			this.LoadSound.Text = "Load Sound";
 			this.LoadSound.UseVisualStyleBackColor = true;
-			this.LoadSound.Click += new System.EventHandler(this.LoadSound_Click);
+			//this.LoadSound.Click += new System.EventHandler(this.LoadSound_Click);
 			// 
 			// FileDirectoryTextBox
 			// 

@@ -45,8 +45,6 @@ namespace SoundEffectGenerator
         {
             notes = PopulateNotes(440, -3, 8, 1);
             noteDurations = new double[] { 0.5, 0.2, 0.3, 0.4 };
-
-            
         }
 
         #region GENERATION
@@ -263,10 +261,11 @@ namespace SoundEffectGenerator
 			if (TempMelody == null) //Checks if there is a melody, if not creates new one
 			{
                 TempMelody = GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave);
-                
             }
             EffectsMelody = new List<int>();
             EffectsMelody = TempMelody;
+
+            // if statments to check whether some of the effect checkboxes are checked.
 			if (PhaseInverterEffect.Checked)
 			{
                 EffectsMelody = PhaseInverter(EffectsMelody);
@@ -287,14 +286,18 @@ namespace SoundEffectGenerator
         }
         private void GenerateNotes_Click(object sender, EventArgs e)
         {
+            // Here we make a new temporary melody, for use in other places using the GenerateRandomMelody Function
             TempMelody = GenerateRandomMelody(DEFAULT_MELODY_NOTE_COUNT, SinWave);
             waveOut = new WaveOut();
             waveOut.Init(convertToWaveProvider16(TempMelody, SAMPLE_RATE, CHANNEL_COUNT));
+            //Play the generated tone
             waveOut.Play();
+            // Update our chart to display the notes.
             UpdateChart(chart1, TempMelody);
         }
         private void playSound_Click(object sender, EventArgs e)
-        {
+        { 
+            // check if our TempMelody is not nothing
 			if (TempMelody != null)
 			{
                 waveOut = new WaveOut();
@@ -339,12 +342,18 @@ namespace SoundEffectGenerator
 
         private void UpdateChart(Chart chart, List<int> data)
         {
+            // Here we make a new series for use
             Series dataSeries = new Series();
+            // We then set that series type to a line, this is so the graph becomes a line graph
             dataSeries.ChartType = SeriesChartType.Line;
+            // We bind our y data points to the passed in list
             dataSeries.Points.DataBindY(data);
 
+            // clear the chart
             chart.Series.Clear();
+            // Set the max X to be the SAMPLE_RATE
             chart.ChartAreas[0].AxisX.Maximum = SAMPLE_RATE;
+            // Add the dataseries to the chart to display
             chart.Series.Add(dataSeries);
         }
 
